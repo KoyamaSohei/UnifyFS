@@ -118,6 +118,14 @@ UNIFYFS_DECL(read, ssize_t, (int fd, void* buf, size_t count));
 UNIFYFS_DECL(readv, ssize_t, (int fd, const struct iovec* iov, int iovcnt));
 UNIFYFS_DECL(write, ssize_t, (int fd, const void* buf, size_t count));
 UNIFYFS_DECL(writev, ssize_t, (int fd, const struct iovec* iov, int iovcnt));
+UNIFYFS_DECL(preadv, ssize_t, (int fd, const struct iovec* iov, int iovcnt,
+                               off_t offset));
+UNIFYFS_DECL(preadv64, ssize_t, (int fd, const struct iovec* iov, int iovcnt,
+                                 off64_t offset));
+UNIFYFS_DECL(pwritev, ssize_t, (int fd, const struct iovec* iov, int iovcnt,
+                                off_t offset));
+UNIFYFS_DECL(pwritev64, ssize_t, (int fd, const struct iovec* iov,
+                                   int iovcnt, off64_t offset));
 
 /* inspection/control operations */
 UNIFYFS_DECL(close, int, (int fd));

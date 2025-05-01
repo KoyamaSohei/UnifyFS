@@ -229,8 +229,12 @@ LINK_WRAPPERS+=",-wrap,pwrite"
 LINK_WRAPPERS+=",-wrap,pwrite64"
 LINK_WRAPPERS+=",-wrap,read"
 LINK_WRAPPERS+=",-wrap,readv"
+LINK_WRAPPERS+=",-wrap,preadv"
+LINK_WRAPPERS+=",-wrap,preadv64"
 LINK_WRAPPERS+=",-wrap,write"
 LINK_WRAPPERS+=",-wrap,writev"
+LINK_WRAPPERS+=",-wrap,pwritev"
+LINK_WRAPPERS+=",-wrap,pwritev64"
 
 OLD_LIBS=$LIBS
 LIBS+=" -lrt"

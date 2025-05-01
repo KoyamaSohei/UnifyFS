@@ -151,6 +151,18 @@ UNIFYFS_DEF(readv, ssize_t,
 UNIFYFS_DEF(writev, ssize_t,
             (int fd, const struct iovec* iov, int iovcnt),
             (fd, iov, iovcnt))
+UNIFYFS_DEF(preadv, ssize_t,
+            (int fd, const struct iovec* iov, int iovcnt, off_t offset),
+            (fd, iov, iovcnt, offset))
+UNIFYFS_DEF(preadv64, ssize_t,
+            (int fd, const struct iovec* iov, int iovcnt, off64_t offset),
+            (fd, iov, iovcnt, offset))
+UNIFYFS_DEF(pwritev, ssize_t,
+            (int fd, const struct iovec* iov, int iovcnt, off_t offset),
+            (fd, iov, iovcnt, offset))
+UNIFYFS_DEF(pwritev64, ssize_t,
+            (int fd, const struct iovec* iov, int iovcnt, off64_t offset),
+            (fd, iov, iovcnt, offset))
 UNIFYFS_DEF(pread, ssize_t,
             (int fd, void* buf, size_t count, off_t off),
             (fd, buf, count, off))
@@ -411,6 +423,10 @@ struct gotcha_binding_t unifyfs_wrappers[] = {
     { "write", UNIFYFS_WRAP(write), &wrappee_handle_write },
     { "readv", UNIFYFS_WRAP(readv), &wrappee_handle_readv },
     { "writev", UNIFYFS_WRAP(writev), &wrappee_handle_writev },
+    { "preadv", UNIFYFS_WRAP(preadv), &wrappee_handle_preadv },
+    { "preadv64", UNIFYFS_WRAP(preadv64), &wrappee_handle_preadv64 },
+    { "pwritev", UNIFYFS_WRAP(pwritev), &wrappee_handle_pwritev },
+    { "pwritev64", UNIFYFS_WRAP(pwritev64), &wrappee_handle_pwritev64 },
     { "pread", UNIFYFS_WRAP(pread), &wrappee_handle_pread },
     { "pread64", UNIFYFS_WRAP(pread64), &wrappee_handle_pread64 },
     { "pwrite", UNIFYFS_WRAP(pwrite), &wrappee_handle_pwrite },

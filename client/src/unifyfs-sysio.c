@@ -1927,6 +1927,96 @@ ssize_t UNIFYFS_WRAP(writev)(int fd, const struct iovec* iov, int iovcnt)
     }
 }
 
+ssize_t UNIFYFS_WRAP(preadv)(int fd, const struct iovec* iov, int iovcnt,
+                             off_t offset)
+{
+    ssize_t ret;
+
+    /* check whether we should intercept this file descriptor */
+    int origfd = fd;
+    if (unifyfs_intercept_fd(&fd)) {
+        ssize_t rret;
+        int i;
+        ret = 0;
+        for (i = 0; i < iovcnt; i++) {
+            rret = UNIFYFS_WRAP(pread)(origfd, (void*)iov[i].iov_base,
+                iov[i].iov_len, offset);
+            if (-1 == rret) {
+                return -1;
+            } else if (0 == rret) {
+                return ret;
+            } else {
+                ret += rret;
+                offset += rret;
+            }
+        }
+        errno = 0;
+        return ret;
+    } else {
+        MAP_OR_FAIL(preadv);
+        ret = UNIFYFS_REAL(preadv)(fd, iov, iovcnt, offset);
+        return ret;
+    }
+}
+
+ssize_t UNIFYFS_WRAP(preadv64)(int fd, const struct iovec* iov, int iovcnt,
+                               off64_t offset)
+{
+    /* check whether we should intercept this file descriptor */
+    int origfd = fd;
+    if (unifyfs_intercept_fd(&fd)) {
+        return UNIFYFS_WRAP(preadv)(origfd, iov, iovcnt, (off_t)offset);
+    } else {
+        MAP_OR_FAIL(preadv64);
+        ssize_t ret = UNIFYFS_REAL(preadv64)(fd, iov, iovcnt, offset);
+        return ret;
+    }
+}
+
+ssize_t UNIFYFS_WRAP(pwritev)(int fd, const struct iovec* iov, int iovcnt,
+                              off_t offset)
+{
+    ssize_t ret;
+
+    /* check whether we should intercept this file descriptor */
+    int origfd = fd;
+    if (unifyfs_intercept_fd(&fd)) {
+        ssize_t wret;
+        int i;
+        ret = 0;
+        for (i = 0; i < iovcnt; i++) {
+            wret = UNIFYFS_WRAP(pwrite)(origfd, (const void*)iov[i].iov_base,
+                iov[i].iov_len, offset);
+            if (-1 == wret) {
+                return -1;
+            } else {
+                ret += wret;
+                offset += wret;
+            }
+        }
+        errno = 0;
+        return ret;
+    } else {
+        MAP_OR_FAIL(pwritev);
+        ret = UNIFYFS_REAL(pwritev)(fd, iov, iovcnt, offset);
+        return ret;
+    }
+}
+
+ssize_t UNIFYFS_WRAP(pwritev64)(int fd, const struct iovec* iov, int iovcnt,
+                           off64_t offset)
+{
+    /* check whether we should intercept this file descriptor */
+    int origfd = fd;
+    if (unifyfs_intercept_fd(&fd)) {
+        return UNIFYFS_WRAP(pwritev)(origfd, iov, iovcnt, (off_t)offset);
+    } else {
+        MAP_OR_FAIL(pwritev64);
+        ssize_t ret = UNIFYFS_REAL(pwritev64)(fd, iov, iovcnt, offset);
+        return ret;
+    }
+}
+
 #ifdef HAVE_LIO_LISTIO
 int UNIFYFS_WRAP(lio_listio)(int mode, struct aiocb* const aiocb_list[],
                              int nitems, struct sigevent* sevp)

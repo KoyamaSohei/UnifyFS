@@ -134,6 +134,10 @@ fileno_unlocked
 # http://www.gnu.org/software/libc/manual/html_node/Scatter_002dGather.html#Scatter_002dGather
 readv
 writev
+preadv
+preadv64
+pwritev
+pwritev64
 
 # http://www.gnu.org/software/libc/manual/html_node/Memory_002dmapped-I_002fO.html#Memory_002dmapped-I_002fO
 mmap
